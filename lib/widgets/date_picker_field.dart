@@ -28,6 +28,7 @@ class DateTimeWidget extends ConsumerWidget {
             filled: false,
             prefixIcon: Icon(Icons.calendar_today),
             border: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey.shade700),
               borderRadius: BorderRadius.circular(4),
             ),
           ),
@@ -35,7 +36,7 @@ class DateTimeWidget extends ConsumerWidget {
           readOnly: true,
         ),
         SizedBox(
-          height: 10,
+          height: 20,
         ),
       ],
     );

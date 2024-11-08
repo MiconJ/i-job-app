@@ -42,12 +42,13 @@ class TextFormFieldCustom extends ConsumerWidget {
             hintMaxLines: 1,
             floatingLabelBehavior: FloatingLabelBehavior.always,
             border: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey.shade700),
               borderRadius: BorderRadius.circular(4),
             ),
           ),
           inputFormatters: inputFormatters,
           maxLength: maxLength,
-          onChanged: onChanged, // Updated to use onChanged
+          onChanged: onChanged,
           validator: validator,
           maxLines: maxLines,
         ),

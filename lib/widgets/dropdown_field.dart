@@ -4,18 +4,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ijob_app/providers/add_agency_form_provider.dart';
 
 class DropdownField extends ConsumerWidget {
-  const DropdownField({super.key, required this.labelText});
+  const DropdownField(
+      {super.key, required this.labelText, required this.listOptions});
   final String labelText;
+  final List<String> listOptions;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final List<String> agencyCategory = [
-      'Công ty tuyển dụng',
-      'Công ty thường',
-    ];
-
     final int agencyCategoryValue = ref.watch(agencyCategoryProvider);
-    String dropdownValue = agencyCategory[agencyCategoryValue];
+    String dropdownValue = listOptions[agencyCategoryValue];
 
     return DropdownButton2(
       isExpanded: true,
@@ -23,24 +20,46 @@ class DropdownField extends ConsumerWidget {
       onChanged: (String? value) {
         if (value != null) {
           ref.read(agencyCategoryProvider.notifier).state =
-              agencyCategory.indexOf(value);
+              listOptions.indexOf(value);
         }
       },
-      items: agencyCategory.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                value,
-                style: TextStyle(
-                  color: Colors.black,
+      items: listOptions.map<DropdownMenuItem<String>>((String value) {
+        if (value == dropdownValue) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
+              ],
+            ),
+          );
+        } else {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
       }).toList(),
       buttonStyleData: ButtonStyleData(
         height: 48,

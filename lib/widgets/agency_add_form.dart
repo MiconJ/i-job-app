@@ -150,6 +150,10 @@ class AgencyAddForm extends ConsumerWidget {
                           Expanded(
                             child: DropdownField(
                               labelText: 'Loại doanh nghiệp',
+                              listOptions: [
+                                'Công ty tuyển dụng',
+                                'Công ty thường',
+                              ],
                             ),
                           )
                         ],

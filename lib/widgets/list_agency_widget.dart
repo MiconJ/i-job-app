@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ijob_app/models/agency_model.dart';
+import 'package:ijob_app/providers/fetch_agency.dart';
 import 'package:ijob_app/widgets/agency_card.dart';
 import 'package:ijob_app/widgets/search_area.dart';
 
-class ListAgencyWidget extends StatefulWidget {
+class ListAgencyWidget extends ConsumerWidget {
   const ListAgencyWidget({super.key});
 
   @override
-  State<StatefulWidget> createState() {
-    return _ListAgencyWidget();
-  }
-}
-
-class _ListAgencyWidget extends State<ListAgencyWidget> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final listAgencies = ref.watch(fetchAgencyProvider);
+    print(listAgencies);
     return Container(
       color: Colors.grey.shade100,
       child: Column(

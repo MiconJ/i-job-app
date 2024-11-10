@@ -12,12 +12,6 @@ class AgencyModel {
   final int? agencyEmployeeNo;
   final DateTime? agencyEstablishmentDate;
   final int agencyType;
-  final int accountNumber;
-  final int limitAccount;
-  final int limitCv;
-  final int trialFlag;
-  final int lockFlag;
-  final int deleteFlag;
   final DateTime createAt;
 
   AgencyModel({
@@ -31,12 +25,6 @@ class AgencyModel {
     this.agencyEmployeeNo,
     this.agencyEstablishmentDate,
     required this.agencyType,
-    required this.limitAccount,
-    required this.limitCv,
-    required this.trialFlag,
-    required this.accountNumber,
-    required this.lockFlag,
-    required this.deleteFlag,
     required this.createAt,
   });
 
@@ -53,12 +41,6 @@ class AgencyModel {
       'agencyEstablishmentDate':
           agencyEstablishmentDate?.millisecondsSinceEpoch,
       'agencyType': agencyType,
-      'accountNumber': accountNumber,
-      'limitAccount': limitAccount,
-      'limitCv': limitCv,
-      'trialFlag': trialFlag,
-      'lockFlag': lockFlag,
-      'deleteFlag': deleteFlag,
       'createAt': createAt.millisecondsSinceEpoch,
     };
   }
@@ -87,12 +69,6 @@ class AgencyModel {
               map['agencyEstablishmentDate'] as int)
           : null,
       agencyType: map['agencyType'] as int,
-      accountNumber: map['accountNumber'] as int,
-      limitAccount: map['limitAccount'] as int,
-      limitCv: map['limitCv'] as int,
-      trialFlag: map['trialFlag'] as int,
-      lockFlag: map['lockFlag'] as int,
-      deleteFlag: map['deleteFlag'] as int,
       createAt: DateTime.fromMillisecondsSinceEpoch(map['createAt'] as int),
     );
   }

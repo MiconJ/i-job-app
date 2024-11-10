@@ -1,11 +1,11 @@
-import 'package:amplify_authenticator/amplify_authenticator.dart';
 import 'package:flutter/material.dart';
 import 'package:ijob_app/screens/list_agency.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-
-import 'amplifyconfiguration.dart';
+import 'package:amplify_api/amplify_api.dart';
+import 'package:ijob_app/amplifyconfiguration.dart';
+import 'package:amplify_authenticator/amplify_authenticator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,6 +19,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool _isAmplifyConfigured = false;
+
   @override
   void initState() {
     super.initState();
@@ -28,10 +30,13 @@ class _MyAppState extends State<MyApp> {
   Future<void> _configureAmplify() async {
     try {
       final auth = AmplifyAuthCognito();
-      await Amplify.addPlugin(auth);
+      final api = AmplifyAPI();
+      await Amplify.addPlugins([auth, api]);
 
-      // call Amplify.configure to use the initialized categories in your app
       await Amplify.configure(amplifyconfig);
+      setState(() {
+        _isAmplifyConfigured = true;
+      });
     } on Exception catch (e) {
       safePrint('An error occurred configuring Amplify: $e');
     }
@@ -39,6 +44,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    if (!_isAmplifyConfigured) {
+      return const MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
+
     return Authenticator(
       child: ProviderScope(
         child: MaterialApp(

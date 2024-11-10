@@ -10,9 +10,9 @@ class AgencyModel {
   final String? agencyPhoneNo;
   final String? agencyEmailAddress;
   final int? agencyEmployeeNo;
-  final DateTime? agencyEstablishmentDate;
+  final String? agencyEstablishmentDate;
   final int agencyType;
-  final DateTime createAt;
+  final String? createAt;
 
   AgencyModel({
     required this.agencyName,
@@ -25,7 +25,7 @@ class AgencyModel {
     this.agencyEmployeeNo,
     this.agencyEstablishmentDate,
     required this.agencyType,
-    required this.createAt,
+    this.createAt,
   });
 
   Map<String, dynamic> toMap() {
@@ -38,10 +38,9 @@ class AgencyModel {
       'agencyPhoneNo': agencyPhoneNo,
       'agencyEmailAddress': agencyEmailAddress,
       'agencyEmployeeNo': agencyEmployeeNo,
-      'agencyEstablishmentDate':
-          agencyEstablishmentDate?.millisecondsSinceEpoch,
+      'agencyEstablishmentDate': agencyEstablishmentDate,
       'agencyType': agencyType,
-      'createAt': createAt.millisecondsSinceEpoch,
+      'createAt': createAt,
     };
   }
 
@@ -49,27 +48,15 @@ class AgencyModel {
     return AgencyModel(
       agencyName: map['agencyName'] as String,
       agencyDescription: map['agencyDescription'] as String,
-      agencyWebsiteUrl: map['agencyWebsiteUrl'] != null
-          ? map['agencyWebsiteUrl'] as String
-          : null,
-      agencyTaxNo:
-          map['agencyTaxNo'] != null ? map['agencyTaxNo'] as String : null,
-      agencyLogoUrl:
-          map['agencyLogoUrl'] != null ? map['agencyLogoUrl'] as String : null,
-      agencyPhoneNo:
-          map['agencyPhoneNo'] != null ? map['agencyPhoneNo'] as String : null,
-      agencyEmailAddress: map['agencyEmailAddress'] != null
-          ? map['agencyEmailAddress'] as String
-          : null,
-      agencyEmployeeNo: map['agencyEmployeeNo'] != null
-          ? map['agencyEmployeeNo'] as int
-          : null,
-      agencyEstablishmentDate: map['agencyEstablishmentDate'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(
-              map['agencyEstablishmentDate'] as int)
-          : null,
+      agencyWebsiteUrl: map['agencyWebsiteUrl'] as String?,
+      agencyTaxNo: map['agencyTaxNo'] as String?,
+      agencyLogoUrl: map['agencyLogoUrl'] as String?,
+      agencyPhoneNo: map['agencyPhoneNo'] as String?,
+      agencyEmailAddress: map['agencyEmailAddress'] as String?,
+      agencyEmployeeNo: map['agencyEmployeeNo'] as int?,
+      agencyEstablishmentDate: map['agencyEstablishmentDate'] as String?,
       agencyType: map['agencyType'] as int,
-      createAt: DateTime.fromMillisecondsSinceEpoch(map['createAt'] as int),
+      createAt: map['createAt'] as String?,
     );
   }
 

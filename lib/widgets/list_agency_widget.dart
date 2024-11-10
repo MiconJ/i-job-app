@@ -11,28 +11,34 @@ class ListAgencyWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final listAgencies = ref.watch(fetchAgencyProvider);
-    print(listAgencies);
+    print('List agency call from screen: $listAgencies');
+
     return Container(
       color: Colors.grey.shade100,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SearchArea(titleArea: 'tìm kiếm nhà tuyển dụng', totalAgency: 12),
+          SearchArea(titleArea: 'Tìm kiếm nhà tuyển dụng', totalAgency: 12),
           Expanded(
             child: Padding(
               padding:
                   const EdgeInsets.only(top: 8, right: 8, left: 8, bottom: 20),
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: 12,
-                itemBuilder: (context, index) => AgencyCard(
-                  agencyName: 'TrungND Agency Name',
-                  agencyDescription:
-                      'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. '
-                      'Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, '
-                      'accompanied by English versions from the 1914 translation by H. Rackham.',
-                  agencyUrl: 'https://google.com',
-                ),
+              child: listAgencies.when(
+                data: (agencies) {
+                  return ListView.builder(
+                    itemCount: agencies.length,
+                    itemBuilder: (context, index) {
+                      final agency = agencies[index];
+                      return AgencyCard(
+                        agencyName: agency.agencyName,
+                        agencyDescription: agency.agencyDescription,
+                        agencyUrl: agency.agencyWebsiteUrl,
+                      );
+                    },
+                  );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stack) => Center(child: Text('Error: $error')),
               ),
             ),
           ),

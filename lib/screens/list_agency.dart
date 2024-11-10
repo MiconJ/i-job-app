@@ -2,7 +2,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ijob_app/providers/fetch_agency.dart';
+import 'package:ijob_app/providers/agency_provider.dart';
 import 'package:ijob_app/screens/agency_add.dart';
 import 'package:ijob_app/widgets/list_agency_widget.dart';
 
@@ -33,6 +33,7 @@ class ListAgency extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final listAgencies = ref.watch(fetchAgencyProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text(

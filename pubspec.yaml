@@ -43,6 +43,11 @@ dependencies:
   build_runner: ^2.4.13
   custom_lint: ^0.7.0
   dropdown_button2: ^2.3.9
+  amplify_flutter: 1.8.0
+  amplify_api: ^1.0.0
+  amplify_auth_cognito: ^1.0.0
+  amplify_authenticator: ^1.6.0
+  amplify_storage_s3: ^1.0.0
 
 dev_dependencies:
   flutter_test:

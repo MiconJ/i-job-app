@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ijob_app/providers/add_agency_form_provider.dart';
 import 'package:ijob_app/providers/agency_provider.dart';
@@ -7,6 +6,7 @@ import 'package:ijob_app/widgets/date_picker_field.dart';
 import 'package:ijob_app/widgets/dropdown_field.dart';
 import 'package:ijob_app/widgets/text_form_field_custom.dart';
 import 'package:intl/intl.dart';
+
 
 class AgencyAddForm extends ConsumerWidget {
   const AgencyAddForm({super.key});
@@ -38,7 +38,7 @@ class AgencyAddForm extends ConsumerWidget {
                           }
                         },
                         onChanged: (value) {
-                          print(value);
+                          ref.read(agencyNameProvider.notifier).state = value;
                         },
                       ),
                       TextFormFieldCustom(
@@ -51,7 +51,7 @@ class AgencyAddForm extends ConsumerWidget {
                           }
                         },
                         onChanged: (value) {
-                          print(value);
+                          ref.read(agencyTaxNoProvider.notifier).state = value;
                         },
                       ),
                       Row(
@@ -68,8 +68,8 @@ class AgencyAddForm extends ConsumerWidget {
                                 // ),
                               ],
                               onChanged: (value) {
-                                // Use 'onChangedd' instead of 'onChanged'
-                                print(value);
+                                ref.read(agencyPhoneNoProvider.notifier).state =
+                                    value;
                               },
                             ),
                           ),
@@ -88,8 +88,9 @@ class AgencyAddForm extends ConsumerWidget {
                                 }
                               },
                               onChanged: (value) {
-                                // Use 'onChangedd' instead of 'onChanged'
-                                print(value);
+                                ref
+                                    .read(agencyEmailAddressProvider.notifier)
+                                    .state = value;
                               },
                             ),
                           ),
@@ -103,7 +104,9 @@ class AgencyAddForm extends ConsumerWidget {
                               labelText: 'Website',
                               maxLength: 50,
                               onChanged: (value) {
-                                print(value);
+                                ref
+                                    .read(agencyWebsiteUrlProvider.notifier)
+                                    .state = value;
                               },
                             ),
                           ),
@@ -116,7 +119,9 @@ class AgencyAddForm extends ConsumerWidget {
                               labelText: 'Số lượng nhân viên',
                               maxLength: 7,
                               onChanged: (value) {
-                                print(value);
+                                ref
+                                    .read(agencyEmployeeNoProvider.notifier)
+                                    .state = value;
                               },
                             ),
                           ),
@@ -166,7 +171,8 @@ class AgencyAddForm extends ConsumerWidget {
                         maxLines: 5,
                         keyboardType: TextInputType.multiline,
                         onChanged: (value) {
-                          print(value);
+                          ref.read(agencyDescriptionProvider.notifier).state =
+                              value;
                         },
                       ),
                     ],

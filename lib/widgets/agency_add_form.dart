@@ -7,7 +7,6 @@ import 'package:ijob_app/widgets/dropdown_field.dart';
 import 'package:ijob_app/widgets/text_form_field_custom.dart';
 import 'package:intl/intl.dart';
 
-
 class AgencyAddForm extends ConsumerWidget {
   const AgencyAddForm({super.key});
 
@@ -121,7 +120,7 @@ class AgencyAddForm extends ConsumerWidget {
                               onChanged: (value) {
                                 ref
                                     .read(agencyEmployeeNoProvider.notifier)
-                                    .state = value;
+                                    .state = int.parse(value);
                               },
                             ),
                           ),

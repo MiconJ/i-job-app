@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:core';
 
-final extablishedAtProvider = StateProvider<DateTime>((Ref) {
-return DateTime.now();
+final extablishedAtProvider = StateProvider<String>((Ref) {
+return '';
 });
 
 final agencyNameProvider = StateProvider<String>((Ref) {

@@ -212,8 +212,22 @@ class AgencyAddForm extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
-                    onPressed: () {
-                      ref.read(createAgencyProvider.future);
+                    onPressed: () async {
+                      try {
+                        await ref.read(createAgencyProvider.future);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Tạo mới doanh nghiệp thành công'),
+                          ),
+                        );
+                        Navigator.of(context).pop(true);
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Đã xảy ra lỗi: $e'),
+                          ),
+                        );
+                      }
                     },
                   ),
                 ),

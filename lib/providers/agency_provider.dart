@@ -33,7 +33,7 @@ final fetchAgencyProvider = FutureProvider<List<AgencyModel>>(
   },
 );
 
-final createAgencyProvider = FutureProvider<void>((ref) async {
+final createAgencyProvider = FutureProvider<int>((ref) async {
   try {
     final agencyData = ref.watch(createAgencyDataProvider);
 
@@ -44,8 +44,7 @@ final createAgencyProvider = FutureProvider<void>((ref) async {
     final response = await restOperation.response;
 
     if (response.statusCode == 200) {
-      
-      print('Post call succeeded');
+      return 200;
     } else {
       throw Exception('Failed to post agency: ${response.statusCode}');
     }

@@ -8,10 +8,14 @@ class AgencyAdd extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
         title: Text(
-          "Agency Add",
+          "Thêm mới Agency",
           style: TextStyle(color: Colors.white),
         ),
+        titleSpacing: 0,
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: AgencyAddForm(),

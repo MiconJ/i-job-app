@@ -37,7 +37,7 @@ class ListAgency extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "List Agency",
+          "Danh sách Agency",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Theme.of(context).primaryColor,

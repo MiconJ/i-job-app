@@ -4,6 +4,7 @@ import 'package:ijob_app/providers/add_agency_form_provider.dart';
 import 'package:ijob_app/providers/agency_provider.dart';
 import 'package:ijob_app/widgets/date_picker_field.dart';
 import 'package:ijob_app/widgets/dropdown_field.dart';
+import 'package:ijob_app/widgets/image_picker.dart';
 import 'package:ijob_app/widgets/text_form_field_custom.dart';
 import 'package:intl/intl.dart';
 
@@ -162,6 +163,12 @@ class AgencyAddForm extends ConsumerWidget {
                             ),
                           )
                         ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [Expanded(child: ImagePickerWidget())],
                       ),
                       TextFormFieldCustom(
                         hintText: 'Nhập mô tả doanh nghiệp',

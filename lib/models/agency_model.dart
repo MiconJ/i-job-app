@@ -1,12 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'dart:io';
 
 class AgencyModel {
   final String agencyName;
   final String agencyDescription;
   final String? agencyWebsiteUrl;
   final String? agencyTaxNo;
-  final String? agencyLogoUrl;
+  final File? agencyLogoFile; // Để giữ định dạng File
   final String? agencyPhoneNo;
   final String? agencyEmailAddress;
   final int? agencyEmployeeNo;
@@ -19,7 +20,7 @@ class AgencyModel {
     required this.agencyDescription,
     this.agencyWebsiteUrl,
     this.agencyTaxNo,
-    this.agencyLogoUrl,
+    this.agencyLogoFile,
     this.agencyPhoneNo,
     this.agencyEmailAddress,
     this.agencyEmployeeNo,
@@ -34,7 +35,7 @@ class AgencyModel {
       'agencyDescription': agencyDescription,
       'agencyWebsiteUrl': agencyWebsiteUrl,
       'agencyTaxNo': agencyTaxNo,
-      'agencyLogoUrl': agencyLogoUrl,
+      'agencyLogoFile': agencyLogoFile?.path,
       'agencyPhoneNo': agencyPhoneNo,
       'agencyEmailAddress': agencyEmailAddress,
       'agencyEmployeeNo': agencyEmployeeNo,
@@ -50,7 +51,7 @@ class AgencyModel {
       agencyDescription: map['agencyDescription'] as String,
       agencyWebsiteUrl: map['agencyWebsiteUrl'] as String?,
       agencyTaxNo: map['agencyTaxNo'] as String?,
-      agencyLogoUrl: map['agencyLogoUrl'] as String?,
+      agencyLogoFile: map['agencyLogoFile'] != null ? File(map['agencyLogoFile']) : null,
       agencyPhoneNo: map['agencyPhoneNo'] as String?,
       agencyEmailAddress: map['agencyEmailAddress'] as String?,
       agencyEmployeeNo: map['agencyEmployeeNo'] as int?,

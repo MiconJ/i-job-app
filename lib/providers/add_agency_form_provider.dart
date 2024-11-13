@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:core';
 
@@ -43,6 +44,18 @@ final agencyCategoryProvider = StateProvider<int>((Ref) {
 
 final agencyEmployeeNoProvider = StateProvider<int>((Ref) {
   return 0;
+});
+
+class FilePickerNotifier extends StateNotifier<PlatformFile?> {
+  FilePickerNotifier() : super(null);
+
+  void setFile(PlatformFile? file) {
+    state = file;
+  }
+}
+
+final filePickerProvider = StateNotifierProvider<FilePickerNotifier, PlatformFile?>((ref) {
+  return FilePickerNotifier();
 });
 
 final createAgencyDataProvider = StateProvider<Map<String, dynamic>>((ref) {

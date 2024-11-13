@@ -54,3 +54,21 @@ final createAgencyProvider = FutureProvider<int>((ref) async {
     throw Exception('An unexpected error occurred: $e');
   }
 });
+
+final uploadLogoProvider = FutureProvider<void>((ref) async {
+  // try {
+  //   final result = await Amplify.Storage.uploadFile(
+  //     localFile: AWSFile.fromStream(
+  //       platformFile.readStream!,
+  //       size: platformFile.size,
+  //     ),
+  //     path: StoragePath.fromString('public/${platformFile.name}'),
+  //     onProgress: (progress) {
+  //       safePrint('Fraction completed: ${progress.fractionCompleted}');
+  //     },
+  //   ).result;
+  //   safePrint('Successfully uploaded file: ${result.uploadedItem.path}');
+  // } on StorageException catch (e) {
+  //   safePrint(e.message);
+  // }
+});

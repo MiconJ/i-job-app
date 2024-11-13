@@ -27,7 +27,8 @@
       },
       "storage": {
         "agency": {},
-        "agencies": {}
+        "agencies": {},
+        "s3ijobapp": {}
       },
       "api": {
         "agency": {}

@@ -34,7 +34,9 @@ class AgencyCard extends StatelessWidget {
                 Row(
                   children: [
                     Image.network(
-                      'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+                      agencyLogoUrl != null
+                          ? agencyLogoUrl.toString()
+                          : 'https://ijob2e0d21e958c684e51b22b5c052c9363e3edf11-dev.s3.ap-southeast-1.amazonaws.com/public/logo-syp-talents-1.png',
                       width: 58,
                       height: 58,
                     ),

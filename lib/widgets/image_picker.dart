@@ -32,24 +32,21 @@ class ImagePickerWidget extends ConsumerWidget {
               debugPrint('Không có file nào được chọn.');
               return;
             }
-
             final file = result.files.single;
-            debugPrint('Selected file: ${file.path}');
-
             ref.read(filePickerProvider.notifier).setFile(file);
           },
           child: const Text('Chọn ảnh'),
-        ),
-        SizedBox(
-          height: 20,
         ),
         Consumer(
           builder: (context, ref, child) {
             final selectedFile = ref.watch(filePickerProvider);
             return selectedFile != null
                 ? Text('File đã chọn: ${selectedFile.name}')
-                : const Text('Chưa chọn file');
+                : const Text('Vui lòng chọn file logo (.jpg, .png)');
           },
+        ),
+        SizedBox(
+          height: 20,
         ),
       ],
     );

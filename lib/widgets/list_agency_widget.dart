@@ -9,7 +9,6 @@ class ListAgencyWidget extends ConsumerWidget {
   const ListAgencyWidget({super.key});
 
   Future<void> _refreshAgencies(WidgetRef ref) async {
-    // Gọi lại provider để làm mới dữ liệu
     ref.refresh(fetchAgencyProvider);
   }
 

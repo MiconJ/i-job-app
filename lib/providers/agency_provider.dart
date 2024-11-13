@@ -1,8 +1,9 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ijob_app/models/agency_model.dart';
 import 'dart:convert';
-
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:ijob_app/providers/add_agency_form_provider.dart';
 
 final fetchAgencyProvider = FutureProvider<List<AgencyModel>>(
@@ -20,7 +21,7 @@ final fetchAgencyProvider = FutureProvider<List<AgencyModel>>(
           return AgencyModel.fromMap(agencyJson as Map<String, dynamic>);
         }).toList();
 
-        print('List agency call from provider: $agencies');
+        print('List of agencies fetched: $agencies');
         return agencies;
       } else {
         throw Exception('Failed to fetch agencies: ${response.statusCode}');
@@ -34,9 +35,11 @@ final fetchAgencyProvider = FutureProvider<List<AgencyModel>>(
 );
 
 final createAgencyProvider = FutureProvider<int>((ref) async {
-  try {
-    final agencyData = ref.watch(createAgencyDataProvider);
+  await ref.watch(uploadLogoProvider.future);
 
+  final agencyData = await ref.watch(createAgencyDataProvider.future);
+
+  try {
     final restOperation = Amplify.API.post(
       'agencies',
       body: HttpPayload.json(agencyData),
@@ -56,19 +59,29 @@ final createAgencyProvider = FutureProvider<int>((ref) async {
 });
 
 final uploadLogoProvider = FutureProvider<void>((ref) async {
-  // try {
-  //   final result = await Amplify.Storage.uploadFile(
-  //     localFile: AWSFile.fromStream(
-  //       platformFile.readStream!,
-  //       size: platformFile.size,
-  //     ),
-  //     path: StoragePath.fromString('public/${platformFile.name}'),
-  //     onProgress: (progress) {
-  //       safePrint('Fraction completed: ${progress.fractionCompleted}');
-  //     },
-  //   ).result;
-  //   safePrint('Successfully uploaded file: ${result.uploadedItem.path}');
-  // } on StorageException catch (e) {
-  //   safePrint(e.message);
-  // }
+  final platformFile = ref.watch(filePickerProvider);
+  if (platformFile == null) {
+    throw Exception('No file selected for upload');
+  }
+
+  try {
+    final result = await Amplify.Storage.uploadFile(
+      localFile: AWSFile.fromStream(
+        platformFile.readStream!,
+        size: platformFile.size,
+      ),
+      path: StoragePath.fromString('public/logoimage_${DateTime.now()}'),
+      onProgress: (progress) {
+        safePrint('Fraction completed: ${progress.fractionCompleted}');
+      },
+    ).result;
+
+    safePrint('Successfully uploaded file: ${result.uploadedItem.path}');
+    final url =
+        'https://ijob2e0d21e958c684e51b22b5c052c9363e3edf11-dev.s3.ap-southeast-1.amazonaws.com/${result.uploadedItem.path}';
+    ref.read(agencyLogoUrlProvider.notifier).state = url;
+  } on StorageException catch (e) {
+    throw Exception('Failed to upload file: ${e.message}');
+  }
 });
+

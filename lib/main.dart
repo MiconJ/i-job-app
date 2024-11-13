@@ -6,6 +6,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:ijob_app/amplifyconfiguration.dart';
 import 'package:amplify_authenticator/amplify_authenticator.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,7 +32,8 @@ class _MyAppState extends State<MyApp> {
     try {
       final auth = AmplifyAuthCognito();
       final api = AmplifyAPI();
-      await Amplify.addPlugins([auth, api]);
+      final storage = AmplifyStorageS3();
+      await Amplify.addPlugins([auth, api, storage]);
 
       await Amplify.configure(amplifyconfig);
       setState(() {

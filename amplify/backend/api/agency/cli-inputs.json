@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "paths": {
+    "/agency": {
+      "name": "/agency",
+      "lambdaFunction": "agency",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/agencies": {
+      "name": "/agencies",
+      "lambdaFunction": "agencies",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

@@ -14,36 +14,36 @@ final agencyNameProvider = StateProvider<String>((Ref) {
   return '';
 });
 
-final agencyDescriptionProvider = StateProvider<String>((Ref) {
-  return '';
+final agencyDescriptionProvider = StateProvider<String?>((Ref) {
+  return null;
 });
 
-final agencyWebsiteUrlProvider = StateProvider<String>((Ref) {
-  return '';
+final agencyWebsiteUrlProvider = StateProvider<String?>((Ref) {
+  return null;
 });
 
-final agencyTaxNoProvider = StateProvider<String>((Ref) {
-  return '';
+final agencyTaxNoProvider = StateProvider<String?>((Ref) {
+  return null;
 });
 
-final agencyLogoUrlProvider = StateProvider<String>((Ref) {
-  return '';
+final agencyLogoUrlProvider = StateProvider<String?>((Ref) {
+  return null;
 });
 
-final agencyPhoneNoProvider = StateProvider<String>((Ref) {
-  return '';
+final agencyPhoneNoProvider = StateProvider<String?>((Ref) {
+  return null;
 });
 
-final agencyEmailAddressProvider = StateProvider<String>((Ref) {
-  return '';
+final agencyEmailAddressProvider = StateProvider<String?>((Ref) {
+  return null;
 });
 
 final agencyCategoryProvider = StateProvider<int>((Ref) {
   return 0;
 });
 
-final agencyEmployeeNoProvider = StateProvider<int>((Ref) {
-  return 0;
+final agencyEmployeeNoProvider = StateProvider<int?>((Ref) {
+  return null;
 });
 
 class FilePickerNotifier extends StateNotifier<PlatformFile?> {
@@ -54,11 +54,12 @@ class FilePickerNotifier extends StateNotifier<PlatformFile?> {
   }
 }
 
-final filePickerProvider = StateNotifierProvider<FilePickerNotifier, PlatformFile?>((ref) {
+final filePickerProvider =
+    StateNotifierProvider<FilePickerNotifier, PlatformFile?>((ref) {
   return FilePickerNotifier();
 });
 
-final createAgencyDataProvider = StateProvider<Map<String, dynamic>>((ref) {
+final createAgencyDataProvider = FutureProvider<Map<String, dynamic>>((ref) {
   return {
     "agencyName": ref.read(agencyNameProvider),
     "agencyDescription": ref.read(agencyDescriptionProvider),

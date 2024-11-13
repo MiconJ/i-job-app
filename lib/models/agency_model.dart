@@ -7,7 +7,7 @@ class AgencyModel {
   final String agencyDescription;
   final String? agencyWebsiteUrl;
   final String? agencyTaxNo;
-  final File? agencyLogoFile; // Để giữ định dạng File
+  final File? agencyLogoFile;
   final String? agencyPhoneNo;
   final String? agencyEmailAddress;
   final int? agencyEmployeeNo;

@@ -1,3 +1,4 @@
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -85,3 +86,18 @@ final uploadLogoProvider = FutureProvider<void>((ref) async {
   }
 });
 
+final accessTokenProvider = FutureProvider<String?>((ref) async {
+  try {
+    AuthSession session = await Amplify.Auth.fetchAuthSession();
+    if (session.isSignedIn) {
+      CognitoAuthSession cognitoSession = session as CognitoAuthSession;
+      return cognitoSession.credentialsResult.value.sessionToken;
+      ;
+    } else {
+      return null;
+    }
+  } on AuthException catch (e) {
+    safePrint('Error fetching auth session: ${e.message}');
+    return null;
+  }
+});

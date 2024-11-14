@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ijob_app/providers/agency_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AgencyCard extends StatelessWidget {
+class AgencyCard extends ConsumerWidget {
   const AgencyCard({
     super.key,
     this.agencyLogoUrl,
@@ -15,7 +17,8 @@ class AgencyCard extends StatelessWidget {
   final String agencyDescription;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final accessToken = ref.watch(accessTokenProvider);
     return Card(
       color: Colors.white,
       shape: RoundedRectangleBorder(
@@ -34,11 +37,13 @@ class AgencyCard extends StatelessWidget {
                 Row(
                   children: [
                     Image.network(
-                      agencyLogoUrl != null
-                          ? agencyLogoUrl.toString()
-                          : 'https://ijob2e0d21e958c684e51b22b5c052c9363e3edf11-dev.s3.ap-southeast-1.amazonaws.com/public/logo-syp-talents-1.png',
+                      agencyLogoUrl ??
+                          'https://ijob2e0d21e958c684e51b22b5c052c9363e3edf11-dev.s3.ap-southeast-1.amazonaws.com/public/logo-syp-talents-1.png',
                       width: 58,
                       height: 58,
+                      headers: accessToken != null
+                          ? {'Authorization': ''}
+                          : {},
                     ),
                     Expanded(
                       child: ListTile(

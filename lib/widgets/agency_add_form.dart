@@ -222,7 +222,7 @@ class AgencyAddForm extends ConsumerWidget {
                     onPressed: () async {
                       try {
                         await ref.read(createAgencyProvider.future);
-                        
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('Tạo mới doanh nghiệp thành công'),

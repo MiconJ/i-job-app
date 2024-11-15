@@ -33,7 +33,7 @@ class ListAgency extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final listAgencies = ref.watch(fetchAgencyProvider);
+    final agencies = ref.watch(agencyProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text(

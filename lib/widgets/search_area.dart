@@ -2,13 +2,21 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter/material.dart';
 
 class SearchArea extends StatelessWidget {
-  const SearchArea(
-      {super.key, required this.totalAgency, required this.titleArea});
+  const SearchArea({
+    super.key,
+    required this.totalAgency,
+    required this.titleArea,
+    required this.onSearch,
+  });
+
   final String titleArea;
   final int totalAgency;
+  final Function(String) onSearch;
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController searchController = TextEditingController();
+
     return Material(
       child: Container(
         decoration: BoxDecoration(
@@ -32,19 +40,22 @@ class SearchArea extends StatelessWidget {
               Text(
                 titleArea.toUpperCase(),
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
               ),
-              SizedBox(
-                height: 8,
-              ),
+              const SizedBox(height: 8),
               Row(
                 children: [
                   Expanded(
                     child: Container(
                       height: 40,
                       child: TextField(
+                        controller: searchController,
+                        onChanged: (value) {
+                          print(searchController);
+                        },
                         decoration: InputDecoration(
                           hintText: 'Nhập tên nhà tuyển dụng',
                           hintStyle: TextStyle(color: Colors.grey.shade500),
@@ -59,8 +70,9 @@ class SearchArea extends StatelessWidget {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                             borderSide: BorderSide(
-                                color: Theme.of(context).primaryColor,
-                                width: 2),
+                              color: Theme.of(context).primaryColor,
+                              width: 2,
+                            ),
                           ),
                         ),
                       ),
@@ -79,7 +91,7 @@ class SearchArea extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       onPressed: () {
-                        // Add search functionality here
+                        onSearch(searchController.text);
                       },
                       backgroundColor: Theme.of(context).primaryColor,
                       labelStyle: const TextStyle(color: Colors.white),

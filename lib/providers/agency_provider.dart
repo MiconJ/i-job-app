@@ -7,33 +7,40 @@ import 'dart:convert';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:ijob_app/providers/add_agency_form_provider.dart';
 
-final fetchAgencyProvider = FutureProvider<List<AgencyModel>>(
-  (ref) async {
+final agencyProvider = StateNotifierProvider<AgencyNotifier, List<AgencyModel>>((ref) {
+  return AgencyNotifier();
+});
+
+class AgencyNotifier extends StateNotifier<List<AgencyModel>> {
+  AgencyNotifier() : super([]);
+
+  Future<void> fetchAgencies() async {
     try {
-      final restOperation = Amplify.API.get('agencies');
+      final restOperation = await Amplify.API.get('agencies');
       final response = await restOperation.response;
-
       if (response.statusCode == 200) {
-        final jsonResponse = json.decode(response.decodeBody());
-
-        final List<dynamic> agencyData = jsonResponse;
-
+        final List<dynamic> agencyData = json.decode(response.decodeBody());
         final List<AgencyModel> agencies = agencyData.map((agencyJson) {
           return AgencyModel.fromMap(agencyJson as Map<String, dynamic>);
         }).toList();
-
-        print('List of agencies fetched: $agencies');
-        return agencies;
+        state = agencies;
       } else {
         throw Exception('Failed to fetch agencies: ${response.statusCode}');
       }
-    } on ApiException catch (e) {
-      throw Exception('Failed to fetch agencies: ${e.message}');
     } catch (e) {
-      throw Exception('An unexpected error occurred: $e');
+      print('An error occurred: $e');
     }
-  },
-);
+  }
+
+  List<AgencyModel> searchAgencies(String query) {
+    if (query.isEmpty) {
+      return state; 
+    }
+    return state.where((agency) {
+      return agency.agencyName.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+  }
+}
 
 final createAgencyProvider = FutureProvider<int>((ref) async {
   await ref.watch(uploadLogoProvider.future);
@@ -48,7 +55,7 @@ final createAgencyProvider = FutureProvider<int>((ref) async {
     final response = await restOperation.response;
 
     if (response.statusCode == 200) {
-      return 200;
+      return response.statusCode;
     } else {
       throw Exception('Failed to post agency: ${response.statusCode}');
     }

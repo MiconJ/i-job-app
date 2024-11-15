@@ -14,7 +14,7 @@ class ListAgencyWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final listAgencies = ref.watch(fetchAgencyProvider);
+    final listAgencies = ref.watch(agencyProvider);
     print('List agency call from screen: $listAgencies');
 
     return Container(
@@ -23,12 +23,17 @@ class ListAgencyWidget extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SearchArea(
-              titleArea: 'Tìm kiếm nhà tuyển dụng',
-              totalAgency: listAgencies.when(
-                data: (agencies) => agencies.length,
-                loading: () => 0,
-                error: (error, stack) => 0,
-              )),
+            titleArea: 'Tìm kiếm nhà tuyển dụng',
+            totalAgency: listAgencies.when(
+              data: (agencies) => agencies.length,
+              loading: () => 0,
+              error: (error, stack) => 0,
+            ),
+            onSearch: (query) {
+              ref.watch(fetchAgencyProvider.notifier).searchAgencies(query);
+              print(query);
+            },
+          ),
           Expanded(
             child: Padding(
               padding:

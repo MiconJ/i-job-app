@@ -4,7 +4,7 @@ import 'dart:io';
 
 class AgencyModel {
   final String agencyName;
-  final String agencyDescription;
+  final String? agencyDescription;
   final String? agencyWebsiteUrl;
   final String? agencyTaxNo;
   final File? agencyLogoFile;
@@ -17,7 +17,7 @@ class AgencyModel {
 
   AgencyModel({
     required this.agencyName,
-    required this.agencyDescription,
+    this.agencyDescription,
     this.agencyWebsiteUrl,
     this.agencyTaxNo,
     this.agencyLogoFile,
@@ -48,7 +48,7 @@ class AgencyModel {
   factory AgencyModel.fromMap(Map<String, dynamic> map) {
     return AgencyModel(
       agencyName: map['agencyName'] as String,
-      agencyDescription: map['agencyDescription'] as String,
+      agencyDescription: map['agencyDescription'] as String?,
       agencyWebsiteUrl: map['agencyWebsiteUrl'] as String?,
       agencyTaxNo: map['agencyTaxNo'] as String?,
       agencyLogoFile:

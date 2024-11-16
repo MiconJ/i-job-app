@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ijob_app/providers/agency_provider.dart';
+import 'package:ijob_app/screens/agency_detail.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AgencyCard extends ConsumerWidget {
@@ -16,6 +17,13 @@ class AgencyCard extends ConsumerWidget {
   final String? agencyUrl;
   final String agencyDescription;
 
+  void _viewAgencyDetail(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AgencyDetail()),
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final accessToken = ref.watch(accessTokenProvider);
@@ -26,7 +34,7 @@ class AgencyCard extends ConsumerWidget {
       ),
       child: InkWell(
         onTap: () {
-          print('Click on card');
+          _viewAgencyDetail(context);
         },
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -41,7 +49,7 @@ class AgencyCard extends ConsumerWidget {
                       height: 58,
                       child: Image.network(
                         agencyLogoUrl ??
-                            'https://ijob2e0d21e958c684e51b22b5c052c9363e3edf11-dev.s3.ap-southeast-1.amazonaws.com/public/logo-syp-talents-1.png',
+                            'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
                         width: 58,
                         height: 58,
                         headers:

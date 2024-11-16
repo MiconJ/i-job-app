@@ -43,7 +43,7 @@ class ListAgencyWidget extends ConsumerWidget {
                         final agency = listAgencies[index];
                         return AgencyCard(
                           agencyName: agency.agencyName,
-                          agencyDescription: agency.agencyDescription,
+                          agencyDescription: agency.agencyDescription ?? '',
                           agencyUrl: agency.agencyWebsiteUrl ?? '',
                         );
                       },

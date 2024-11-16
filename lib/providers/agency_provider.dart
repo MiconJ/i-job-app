@@ -86,16 +86,16 @@ final createAgencyProvider = FutureProvider<int>((ref) async {
 final uploadLogoProvider = FutureProvider<void>((ref) async {
   final platformFile = ref.watch(filePickerProvider);
   if (platformFile == null) {
-    throw Exception('No file selected for upload');
+    return null;
   }
-
   try {
     final result = await Amplify.Storage.uploadFile(
       localFile: AWSFile.fromStream(
         platformFile.readStream!,
         size: platformFile.size,
       ),
-      path: StoragePath.fromString('public/logoimage_${DateTime.now()}'),
+      path: StoragePath.fromString(
+          'public/logoimage_${DateTime.now().toIso8601String()}'),
       onProgress: (progress) {
         safePrint('Fraction completed: ${progress.fractionCompleted}');
       },

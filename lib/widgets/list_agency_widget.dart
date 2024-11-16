@@ -22,6 +22,7 @@ class ListAgencyWidget extends ConsumerWidget {
             titleArea: 'Tìm kiếm nhà tuyển dụng',
             totalAgency: listAgencies.length,
             onSearch: (query) {
+              ref.refresh(fetchAgencyProvider);
               ref.watch(searchAgenciesProvider.notifier).searchAgencies(query);
             },
           ),

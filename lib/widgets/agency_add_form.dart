@@ -13,6 +13,7 @@ class AgencyAddForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final _formKey = GlobalKey<FormState>();
     final extablishedAt = ref.watch(extablishedAtProvider);
     return Container(
       color: Colors.white,
@@ -23,7 +24,7 @@ class AgencyAddForm extends ConsumerWidget {
                 const EdgeInsets.only(left: 12, right: 12, top: 20, bottom: 20),
             child: SingleChildScrollView(
               child: Form(
-                  autovalidateMode: AutovalidateMode.disabled,
+                  key: _formKey,
                   child: Column(
                     children: [
                       TextFormFieldCustom(
@@ -61,15 +62,20 @@ class AgencyAddForm extends ConsumerWidget {
                               hintText: 'Nhập số điện thoại doanh nghiệp',
                               labelText: 'Số điện thoại',
                               maxLength: 15,
-                              inputFormatters: const [
-                                // Todo: create regex
-                                // FilteringTextInputFormatter.allow(
-                                //   RegExp(r'^(?:\+?88|0088)?01[13-9]\d{8}$'),
-                                // ),
-                              ],
                               onChanged: (value) {
                                 ref.read(agencyPhoneNoProvider.notifier).state =
                                     value;
+                              },
+                              validator: (String? value) {
+                                final phoneRegex =
+                                    RegExp(r'^\+?[1-9]\d{1,15}$');
+                                if (value == null || value.isEmpty) {
+                                  return null;
+                                }
+                                if (!phoneRegex.hasMatch(value)) {
+                                  return 'Số điện thoại không hợp lệ';
+                                }
+                                return null;
                               },
                             ),
                           ),
@@ -83,9 +89,16 @@ class AgencyAddForm extends ConsumerWidget {
                               maxLength: 50,
                               inputFormatters: const [],
                               validator: (String? value) {
-                                if (value != null && !value.contains('@')) {
+                                final emailRegex = RegExp(
+                                  r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                                );
+                                if (value == null || value.isEmpty) {
+                                  return null;
+                                }
+                                if (!emailRegex.hasMatch(value)) {
                                   return 'Email không hợp lệ';
                                 }
+                                return null;
                               },
                               onChanged: (value) {
                                 ref
@@ -220,21 +233,30 @@ class AgencyAddForm extends ConsumerWidget {
                       ),
                     ),
                     onPressed: () async {
-                      try {
-                        await ref.read(createAgencyProvider.future);
-
+                      if (_formKey.currentState?.validate() == true) {
+                        {
+                          try {
+                            await ref.read(createAgencyProvider.future);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content:
+                                    Text('Tạo mới doanh nghiệp thành công'),
+                              ),
+                            );
+                            ref.refresh(fetchAgencyProvider);
+                            Navigator.of(context).pop();
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Đã xảy ra lỗi: $e'),
+                              ),
+                            );
+                          }
+                        }
+                      } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Tạo mới doanh nghiệp thành công'),
-                          ),
-                        );
-                        ref.refresh(fetchAgencyProvider);
-                        Navigator.of(context).pop();
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Đã xảy ra lỗi: $e'),
-                          ),
+                              content: Text('Vui lòng kiểm tra thông tin')),
                         );
                       }
                     },

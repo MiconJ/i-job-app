@@ -51,7 +51,8 @@ class AgencyModel {
       agencyDescription: map['agencyDescription'] as String,
       agencyWebsiteUrl: map['agencyWebsiteUrl'] as String?,
       agencyTaxNo: map['agencyTaxNo'] as String?,
-      agencyLogoFile: map['agencyLogoFile'] != null ? File(map['agencyLogoFile']) : null,
+      agencyLogoFile:
+          map['agencyLogoFile'] != null ? File(map['agencyLogoFile']) : null,
       agencyPhoneNo: map['agencyPhoneNo'] as String?,
       agencyEmailAddress: map['agencyEmailAddress'] as String?,
       agencyEmployeeNo: map['agencyEmployeeNo'] as int?,
@@ -62,6 +63,11 @@ class AgencyModel {
   }
 
   String toJson() => json.encode(toMap());
+
+  @override
+  String toString() {
+    return 'AgencyModel(agencyName: $agencyName, agencyDescription: $agencyDescription, agencyWebsiteUrl: $agencyWebsiteUrl)';
+  }
 
   factory AgencyModel.fromJson(String source) =>
       AgencyModel.fromMap(json.decode(source) as Map<String, dynamic>);

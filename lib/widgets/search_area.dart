@@ -1,7 +1,6 @@
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter/material.dart';
 
-class SearchArea extends StatelessWidget {
+class SearchArea extends StatefulWidget {
   const SearchArea({
     super.key,
     required this.totalAgency,
@@ -14,9 +13,30 @@ class SearchArea extends StatelessWidget {
   final Function(String) onSearch;
 
   @override
-  Widget build(BuildContext context) {
-    TextEditingController searchController = TextEditingController();
+  _SearchAreaState createState() => _SearchAreaState();
+}
 
+class _SearchAreaState extends State<SearchArea> {
+  late TextEditingController searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    searchController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  void clearText() {
+    searchController.clear();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Material(
       child: Container(
         decoration: BoxDecoration(
@@ -38,7 +58,7 @@ class SearchArea extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                titleArea.toUpperCase(),
+                widget.titleArea.toUpperCase(),
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
                   fontWeight: FontWeight.bold,
@@ -53,17 +73,16 @@ class SearchArea extends StatelessWidget {
                       height: 40,
                       child: TextField(
                         controller: searchController,
-                        onChanged: (value) {
-                          print(searchController);
-                        },
                         decoration: InputDecoration(
                           hintText: 'Nhập tên nhà tuyển dụng',
                           hintStyle: TextStyle(color: Colors.grey.shade500),
+                          suffixIcon: searchController.text.isNotEmpty
+                              ? IconButton(
+                                  icon: Icon(Icons.clear),
+                                  onPressed: clearText,
+                                )
+                              : null,
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(color: Colors.grey.shade300),
-                          ),
-                          disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                             borderSide: BorderSide(color: Colors.grey.shade300),
                           ),
@@ -91,7 +110,7 @@ class SearchArea extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       onPressed: () {
-                        onSearch(searchController.text);
+                        widget.onSearch(searchController.text);
                       },
                       backgroundColor: Theme.of(context).primaryColor,
                       labelStyle: const TextStyle(color: Colors.white),
@@ -101,7 +120,7 @@ class SearchArea extends StatelessWidget {
               ),
               const SizedBox(height: 8.0),
               Text(
-                'Số lượng Agency: $totalAgency',
+                'Số lượng Agency: ${widget.totalAgency}',
                 style: const TextStyle(fontSize: 14.0),
               ),
             ],

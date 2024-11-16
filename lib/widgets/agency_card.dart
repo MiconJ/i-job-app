@@ -36,14 +36,17 @@ class AgencyCard extends ConsumerWidget {
               children: [
                 Row(
                   children: [
-                    Image.network(
-                      agencyLogoUrl ??
-                          'https://ijob2e0d21e958c684e51b22b5c052c9363e3edf11-dev.s3.ap-southeast-1.amazonaws.com/public/logo-syp-talents-1.png',
+                    SizedBox(
                       width: 58,
                       height: 58,
-                      headers: accessToken != null
-                          ? {'Authorization': ''}
-                          : {},
+                      child: Image.network(
+                        agencyLogoUrl ??
+                            'https://ijob2e0d21e958c684e51b22b5c052c9363e3edf11-dev.s3.ap-southeast-1.amazonaws.com/public/logo-syp-talents-1.png',
+                        width: 58,
+                        height: 58,
+                        headers:
+                            accessToken != null ? {'Authorization': ''} : {},
+                      ),
                     ),
                     Expanded(
                       child: ListTile(

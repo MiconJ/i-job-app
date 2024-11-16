@@ -8,13 +8,9 @@ import 'package:ijob_app/widgets/search_area.dart';
 class ListAgencyWidget extends ConsumerWidget {
   const ListAgencyWidget({super.key});
 
-  Future<void> _refreshAgencies(WidgetRef ref) async {
-    ref.refresh(fetchAgencyProvider);
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final listAgencies = ref.watch(agencyProvider);
+    final listAgencies = ref.watch(searchAgenciesProvider);
     print('List agency call from screen: $listAgencies');
 
     return Container(
@@ -24,41 +20,33 @@ class ListAgencyWidget extends ConsumerWidget {
         children: [
           SearchArea(
             titleArea: 'Tìm kiếm nhà tuyển dụng',
-            totalAgency: listAgencies.when(
-              data: (agencies) => agencies.length,
-              loading: () => 0,
-              error: (error, stack) => 0,
-            ),
+            totalAgency: listAgencies.length,
             onSearch: (query) {
-              ref.watch(fetchAgencyProvider.notifier).searchAgencies(query);
-              print(query);
+              ref.watch(searchAgenciesProvider.notifier).searchAgencies(query);
             },
           ),
           Expanded(
             child: Padding(
               padding:
                   const EdgeInsets.only(top: 8, right: 8, left: 8, bottom: 20),
-              child: RefreshIndicator(
-                onRefresh: () => _refreshAgencies(ref),
-                child: listAgencies.when(
-                  data: (agencies) {
-                    return ListView.builder(
-                      itemCount: agencies.length,
+              child: listAgencies.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'Không có dữ liệu hợp lệ',
+                        style: TextStyle(fontWeight: FontWeight.w400),
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: listAgencies.length,
                       itemBuilder: (context, index) {
-                        final agency = agencies[index];
+                        final agency = listAgencies[index];
                         return AgencyCard(
                           agencyName: agency.agencyName,
                           agencyDescription: agency.agencyDescription,
                           agencyUrl: agency.agencyWebsiteUrl ?? '',
                         );
                       },
-                    );
-                  },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (error, stack) => Center(child: Text('Error: $error')),
-                ),
-              ),
+                    ),
             ),
           ),
         ],

@@ -7,41 +7,57 @@ import 'dart:convert';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:ijob_app/providers/add_agency_form_provider.dart';
 
-final agencyProvider = StateNotifierProvider<AgencyNotifier, List<AgencyModel>>((ref) {
-  return AgencyNotifier();
+//Fetch agencies data from AWS
+final fetchAgencyProvider = FutureProvider<List<AgencyModel>>((ref) async {
+  try {
+    final restOperation = Amplify.API.get('agencies');
+    final response = await restOperation.response;
+
+    if (response.statusCode == 200) {
+      print('Response: $response');
+      final List<dynamic> agencyData = json.decode(response.decodeBody());
+      return agencyData.map((agencyJson) {
+        return AgencyModel.fromMap(agencyJson as Map<String, dynamic>);
+      }).toList();
+    } else {
+      throw Exception('Failed to fetch agencies: ${response.statusCode}');
+    }
+  } catch (e) {
+    safePrint('An error occurred: $e');
+    throw e;
+  }
 });
 
-class AgencyNotifier extends StateNotifier<List<AgencyModel>> {
-  AgencyNotifier() : super([]);
+final agenciesProvider = Provider<AsyncValue<List<AgencyModel>>>((ref) {
+  return ref.watch(fetchAgencyProvider);
+});
 
-  Future<void> fetchAgencies() async {
-    try {
-      final restOperation = await Amplify.API.get('agencies');
-      final response = await restOperation.response;
-      if (response.statusCode == 200) {
-        final List<dynamic> agencyData = json.decode(response.decodeBody());
-        final List<AgencyModel> agencies = agencyData.map((agencyJson) {
-          return AgencyModel.fromMap(agencyJson as Map<String, dynamic>);
-        }).toList();
+final searchAgenciesProvider =
+    StateNotifierProvider<SearchAgenciesNotifier, List<AgencyModel>>((ref) {
+  final agencies = ref.watch(agenciesProvider);
+  return SearchAgenciesNotifier(agencies);
+});
+
+//Search data based on fetchAgency
+class SearchAgenciesNotifier extends StateNotifier<List<AgencyModel>> {
+  final AsyncValue<List<AgencyModel>> _agencies;
+  SearchAgenciesNotifier(this._agencies) : super(_agencies.value ?? []);
+
+  void searchAgencies(String query) {
+    print('print from search: $query');
+    _agencies.whenData((agencies) {
+      if (query.isEmpty) {
         state = agencies;
       } else {
-        throw Exception('Failed to fetch agencies: ${response.statusCode}');
+        state = agencies.where((agency) {
+          return agency.agencyName.toLowerCase().contains(query.toLowerCase());
+        }).toList();
       }
-    } catch (e) {
-      print('An error occurred: $e');
-    }
-  }
-
-  List<AgencyModel> searchAgencies(String query) {
-    if (query.isEmpty) {
-      return state; 
-    }
-    return state.where((agency) {
-      return agency.agencyName.toLowerCase().contains(query.toLowerCase());
-    }).toList();
+    });
   }
 }
 
+// POST agency data to AWS dynamoDB
 final createAgencyProvider = FutureProvider<int>((ref) async {
   await ref.watch(uploadLogoProvider.future);
 
@@ -66,6 +82,7 @@ final createAgencyProvider = FutureProvider<int>((ref) async {
   }
 });
 
+//Upload logoimage
 final uploadLogoProvider = FutureProvider<void>((ref) async {
   final platformFile = ref.watch(filePickerProvider);
   if (platformFile == null) {
@@ -93,6 +110,7 @@ final uploadLogoProvider = FutureProvider<void>((ref) async {
   }
 });
 
+// GET accessToken from Auth
 final accessTokenProvider = FutureProvider<String?>((ref) async {
   try {
     AuthSession session = await Amplify.Auth.fetchAuthSession();

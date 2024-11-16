@@ -228,7 +228,8 @@ class AgencyAddForm extends ConsumerWidget {
                             content: Text('Tạo mới doanh nghiệp thành công'),
                           ),
                         );
-                        Navigator.of(context).pop(true);
+                        ref.refresh(fetchAgencyProvider);
+                        Navigator.of(context).pop();
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
